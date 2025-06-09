@@ -10,12 +10,11 @@ if ($conn->connect_error) {
 }
 
 // Query ulasan, misalnya ambil 5 ulasan terbaru
-$sql = "SELECT u.deskripsi, usr.username
+$sql = "SELECT u.deskripsi, u.rating, usr.username
 FROM ulasan u
 JOIN users usr ON u.user_id = usr.id_users
 ORDER BY u.created_at DESC
-LIMIT 5
-";
+LIMIT 5";
 $result = $conn->query($sql);
 ?>
 
@@ -89,7 +88,7 @@ $result = $conn->query($sql);
     </div>
 
     <h2 style="text-align: center;">Ulasan Populer</h2>
-    <section class="Testimoni">
+<section class="Testimoni">
   <div class="swiper mySwiper">
     <div class="swiper-wrapper">
       <?php
@@ -102,10 +101,18 @@ $result = $conn->query($sql);
               // Escape output untuk keamanan
               $deskripsi = htmlspecialchars($row['deskripsi']);
               $username = htmlspecialchars($row['username']);
+              $rating = isset($row['rating']) ? (int)$row['rating'] : 0;
+
               echo '<div class="swiper-slide">';
               echo '  <div class="card">';
               echo '    <p class="testimoni-text">"' . $deskripsi . '"</p>';
               echo '    <p class="testimoni-text">- ' . $username . '</p>';
+              echo '    <div class="star-display">';
+              for ($i = 1; $i <= 5; $i++) {
+                  $filled = $i <= $rating ? 'filled' : '';
+                  echo '<span class="star ' . $filled . '">&#9733;</span>';
+              }
+              echo '    </div>';
               echo '  </div>';
               echo '</div>';
           }
@@ -114,6 +121,8 @@ $result = $conn->query($sql);
       }
       ?>
     </div>
+  </div>
+</section>
 
     <!-- Pagination -->
     <div class="swiper-pagination"></div>
