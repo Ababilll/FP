@@ -134,4 +134,13 @@ body {
   .star-rating label:hover ~ label {
     color: gold;
   }
+  .star-display {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 22px;
+    color: #ccc;
+  }
   
+  .star-display .star.filled {
+    color: gold;
+  }
